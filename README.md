@@ -1,51 +1,34 @@
 # StreamShield Security Evolution
 
-An open-source control plane for autonomous, evidence-driven security improvement of StreamShield using Omnara-managed agents and GitHub Actions.
+An open-source control plane for autonomous, evidence-driven security improvement of StreamShield, using Omnara-managed agents and GitHub Actions.
 
-> Status: architecture scaffold. Agent execution adapters, Omnara API integration, isolated staging infrastructure, and merge enforcement must be implemented and validated before autonomous production use.
+> **Current status:** First executable integration slice. The weekly/manual workflow can launch a read-only Omnara research agent after repository configuration. Defense, authorized red-team, independent evaluation, staging isolation, event collection, and merge enforcement are not yet implemented.
 
-## Goals
+## What is implemented
 
-- Run independent defense, authorized red-team, and evaluator agents.
-- Discover and use vetted security research and testing tools through a permissioned registry.
-- Test only explicitly authorized staging environments with synthetic media and identities.
-- Preserve reproducible evidence, shared intelligence, and an auditable history.
-- Permit automatic merging only after independent evaluation and mandatory CI/security gates.
+- Omnara REST launch adapter using the official documented `POST /orgs/{orgID}/projects/{projectID}/agents` contract.
+- Research-only agent with web search and web fetch tools; no shell, machine, GitHub write access, scanners, or production access.
+- GitHub Actions manual and weekly launch workflow with least-privilege permissions.
+- Idempotent launch requests, bounded timeouts, input validation, and unit tests.
+- Fail-closed behavior when Omnara configuration is incomplete.
 
-## Agent teams
+## Configure
 
-**Defense:** security architect, Django security engineer, streaming/gateway engineer, DRM/playback engineer, defense reviewer.
+Add the Actions secret `OMNARA_API_TOKEN` and repository variables `OMNARA_ORG_ID`, `OMNARA_PROJECT_ID`, `OMNARA_MODEL_PROVIDER_CONFIG`, and `OMNARA_MODEL_NAME`. Optionally set `OMNARA_API_URL` for a self-hosted deployment. See [Omnara integration](docs/omnara-integration.md).
 
-**Red team:** browser tester, HLS protocol tester, API tester, session/token tester, reconstruction/evidence analyst.
+## Run tests
 
-**Independent evaluator:** verifies findings, reproduces fixes, checks regressions and emits a signed/traceable decision. It must not evaluate its own changes.
+```bash
+python3 -m unittest discover -v
+```
 
-## Non-negotiable constraints
+## Safety invariants
 
-- Screen recording and external-camera recording by an authorized viewer are accepted exceptions. They are not vulnerabilities or release blockers. Do not build controls intended to defeat OS/device capture.
-- This exception does not permit unauthorized API access, playlist/segment retrieval, token replay, cache leakage, session sharing, cross-tenant access, or unauthorized reconstruction.
+- Research agent is read-only and may use only public web research tools.
+- No production credentials, customer media, DRM keys, or production database access.
+- Red-team tests only on StreamShield-owned, explicitly authorized synthetic staging.
+- Screen recording by an authorized viewer and external-camera recording are accepted limitations, not vulnerabilities or release blockers.
 - No absolute copy-prevention claims.
-- No production credentials, customer media, DRM keys, or production database access in agent jobs.
-- Persistent centralized video storage remains Telegram-only per the product requirement; do not add R2, S3, or another persistent object store without an explicit decision.
-- The LMS remains the authority for identity, enrollment, and payment decisions.
-- Fail closed when the evaluator, evidence, required checks, or authorization boundary is unavailable.
+- Automatic merge remains disabled until independent evaluation, required checks, branch protection, and rollback are verified.
 
-## Quick start
-
-1. Read `docs/architecture.md`, `docs/security-policy.md`, and `docs/omnara-integration.md`.
-2. Configure repository secrets only after reviewing the threat model. Never expose secrets to forked or untrusted pull-request code.
-3. Build a synthetic-only staging environment and validate its isolation before enabling red-team workflows.
-4. Implement and test the Omnara adapter; no provider-specific API assumptions are embedded in this scaffold.
-5. Keep automatic merge disabled until branch protection, required checks, independent evaluation, and rollback are verified.
-
-## Repository layout
-
-- `agents/` role prompts and capability boundaries.
-- `tools/` vetted tool registry and execution policy.
-- `security-evolution/` shared threat intelligence, catalogs, decisions, exceptions, and reports.
-- `.github/workflows/` scheduled/manual CI entry points.
-- `docs/` architecture, integration, and operations guidance.
-
-## License
-
-Apache-2.0. See `LICENSE`.
+See [architecture](docs/architecture.md), [security policy](docs/security-policy.md), and [accepted security exceptions](security-evolution/architecture/security-exceptions.md).
