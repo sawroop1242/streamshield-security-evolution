@@ -1,0 +1,28 @@
+version: 1
+policy:
+  default_state: UNTRUSTED
+  execution_requires_approval: true
+  install_location: ephemeral-isolated-runner
+  pin_versions: true
+  record_source_license_and_checksum: true
+categories:
+  source_analysis:
+    candidates: [semgrep, bandit, codeql]
+  dynamic_testing:
+    candidates: [owasp-zap, nuclei]
+  dependency_security:
+    candidates: [osv-scanner, pip-audit, cargo-audit]
+  secrets:
+    candidates: [gitleaks, trufflehog]
+  infrastructure:
+    candidates: [trivy, checkov]
+  browser_and_media:
+    candidates: [playwright, ffmpeg, ffprobe]
+  rust:
+    candidates: [clippy, cargo-fuzz]
+  research:
+    candidates: [owasp, mitre-attack, nist-cve, cwe, github-advisories]
+notes:
+  - Candidate listing does not authorize installation or execution.
+  - Confirm upstream provenance, license, version, and scope before approval.
+  - Nuclei templates and other third-party test content require review before use.

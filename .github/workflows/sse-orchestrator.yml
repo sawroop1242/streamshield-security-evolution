@@ -1,0 +1,27 @@
+name: SSE Orchestrator
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sse-orchestrator-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  policy-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate baseline policy files
+        run: |
+          test -s docs/security-policy.md
+          test -s security-evolution/architecture/security-exceptions.md
+          test -s tools/registry.yaml
+          echo 'Policy preflight passed. Agent execution is not enabled by this scaffold.'

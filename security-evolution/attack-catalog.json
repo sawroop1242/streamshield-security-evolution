@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "scope": "authorized-synthetic-staging-only",
+  "tests": [
+    {
+      "id": "AT-001",
+      "name": "unauthenticated-playback",
+      "area": "authorization"
+    },
+    {
+      "id": "AT-002",
+      "name": "invalid-playback-token",
+      "area": "authorization"
+    },
+    {
+      "id": "AT-003",
+      "name": "expired-playback-token",
+      "area": "authorization"
+    },
+    {
+      "id": "AT-004",
+      "name": "revoked-session",
+      "area": "authorization"
+    },
+    {
+      "id": "AT-005",
+      "name": "cross-user-asset-access",
+      "area": "tenant-isolation"
+    },
+    {
+      "id": "AT-006",
+      "name": "cross-tenant-access",
+      "area": "tenant-isolation"
+    },
+    {
+      "id": "AT-007",
+      "name": "unauthorized-playlist",
+      "area": "hls"
+    },
+    {
+      "id": "AT-008",
+      "name": "unauthorized-segment",
+      "area": "hls"
+    },
+    {
+      "id": "AT-009",
+      "name": "cross-session-segment-reuse",
+      "area": "hls"
+    },
+    {
+      "id": "AT-010",
+      "name": "cache-isolation",
+      "area": "cache"
+    },
+    {
+      "id": "AT-011",
+      "name": "range-request-authorization",
+      "area": "streaming"
+    },
+    {
+      "id": "AT-012",
+      "name": "authorization-after-revocation",
+      "area": "streaming"
+    },
+    {
+      "id": "AT-013",
+      "name": "frontend-secret-exposure",
+      "area": "browser"
+    },
+    {
+      "id": "AT-014",
+      "name": "source-map-exposure",
+      "area": "browser"
+    },
+    {
+      "id": "AT-015",
+      "name": "client-role-manipulation",
+      "area": "browser"
+    },
+    {
+      "id": "AT-016",
+      "name": "telegram-origin-access-policy",
+      "area": "storage"
+    },
+    {
+      "id": "AT-017",
+      "name": "untrusted-peer-integrity",
+      "area": "p2p"
+    },
+    {
+      "id": "AT-018",
+      "name": "offline-license-expiry-and-reuse",
+      "area": "mobile"
+    },
+    {
+      "id": "AT-019",
+      "name": "secret-leakage-in-logs",
+      "area": "operations"
+    },
+    {
+      "id": "AT-020",
+      "name": "insecure-deployment-defaults",
+      "area": "operations"
+    }
+  ],
+  "excluded_accepted_risks": [
+    "authorized-viewer-screen-recording",
+    "external-camera-recording"
+  ]
+}

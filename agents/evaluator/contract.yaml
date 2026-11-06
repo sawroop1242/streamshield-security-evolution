@@ -1,0 +1,22 @@
+version: 1
+role: independent-evaluator
+allowed_decisions: [PASS, PASS_WITH_ACCEPTED_RISK, FAIL, INCONCLUSIVE, BLOCKED]
+independence:
+  must_not_evaluate_own_changes: true
+  must_reproduce_findings: true
+  must_inspect_actual_diff: true
+checks:
+  - authorized_environment
+  - synthetic_data_only
+  - root_cause_fixed
+  - regression_tests
+  - tenant_isolation
+  - secret_exposure
+  - architecture_constraints
+  - accepted_risk_policy
+  - evidence_traceability
+merge_policy:
+  only_pass_is_auto_merge_eligible: true
+  missing_evidence_blocks: true
+  critical_or_high_blocks: true
+  evaluator_unavailable_fails_closed: true

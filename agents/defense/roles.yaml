@@ -1,0 +1,28 @@
+version: 1
+team: defense
+agents:
+  - id: S1
+    name: security-architect
+    scope: threat-model, architecture, security-decisions
+    permissions: [read-repository, write-assigned-docs, create-branch, open-pull-request]
+  - id: S2
+    name: django-security-engineer
+    scope: django-auth, permissions, tenant-isolation, APIs, migrations, tests
+    permissions: [read-repository, write-assigned-paths, run-unit-tests, create-branch, open-pull-request]
+  - id: S3
+    name: streaming-gateway-engineer
+    scope: HLS, range-requests, Rust-gateway, Telegram-adapter, cache-integrity
+    permissions: [read-repository, write-assigned-paths, run-synthetic-tests, create-branch, open-pull-request]
+  - id: S4
+    name: drm-playback-engineer
+    scope: player, DRM-adapters, mobile-license-lifecycle, playback-continuity
+    permissions: [read-repository, write-assigned-paths, run-synthetic-tests, create-branch, open-pull-request]
+  - id: S5
+    name: defense-reviewer
+    scope: independent-review-of-defense-diffs
+    permissions: [read-repository, read-test-results, submit-review]
+policy:
+  no_production_access: true
+  no_customer_media: true
+  no_production_secrets: true
+  no_self_approval: true

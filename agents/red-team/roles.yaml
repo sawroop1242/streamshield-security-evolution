@@ -1,0 +1,25 @@
+version: 1
+team: red-team
+agents:
+  - id: R1
+    name: browser-extraction-tester
+    scope: browser-visible-exposure, client-cache, source-map, auth-state
+  - id: R2
+    name: hls-protocol-tester
+    scope: playlist-auth, segment-auth, token-expiry, range, cache-isolation
+  - id: R3
+    name: api-authorization-tester
+    scope: object-authorization, tenant-boundaries, validation, rate-limits
+  - id: R4
+    name: session-token-tester
+    scope: session-binding, expiry, replay, revocation, concurrency
+  - id: R5
+    name: reconstruction-evidence-analyst
+    scope: synthetic-stream-reconstruction, reproducible-evidence, residual-risk
+policy:
+  targets: explicitly-authorized-staging-only
+  data: synthetic-only
+  no_third_party_scanning: true
+  no_production_access: true
+  screen_recording_is_accepted_exception: true
+  external_camera_recording_is_accepted_exception: true
