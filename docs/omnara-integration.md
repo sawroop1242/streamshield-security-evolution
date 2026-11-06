@@ -11,7 +11,7 @@ The adapter uses Omnara's documented JSON REST API, not guessed SDK method names
 - Agent launch body supports `config_source: { source, source_format }`, `name`, and `message`.
 - The launch endpoint accepts an `Idempotency-Key` header.
 
-These contracts were checked against the official Omnara repository:
+Contracts were checked against the official Omnara repository:
 - [API overview](https://github.com/omnara-ai/omnara/blob/main/docs/api/overview.mdx)
 - [Quickstart launch example](https://github.com/omnara-ai/omnara/blob/main/docs/snippets/quickstart-launch.mdx)
 - [Published OpenAPI specification](https://github.com/omnara-ai/omnara/blob/main/docs/api-reference/openapi.yaml)
@@ -37,7 +37,7 @@ Set these repository **Actions secrets/variables**:
 
 Never put tokens in repository variables, workflow YAML, agent prompts, or committed files. Use a dedicated least-privilege Omnara API key. The workflow has `contents: read`, disables persisted checkout credentials, and launches only from trusted workflow code on manual dispatch or the weekly schedule.
 
-Run locally with the same environment variables:
+Run locally:
 
 ```bash
 python3 -m unittest discover -v

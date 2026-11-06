@@ -3,12 +3,7 @@ import os
 import unittest
 from unittest.mock import patch
 
-from scripts.launch_omnara_research import (
-    LaunchError,
-    build_agent_config,
-    launch,
-    validate_api_url,
-)
+from scripts.launch_omnara_research import LaunchError, build_agent_config, launch, validate_api_url
 
 
 class FakeResponse:
