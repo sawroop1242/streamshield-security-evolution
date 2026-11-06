@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StreamShield authorized embed QA fixture</title>
+  <style>
+    body { margin: 0; padding: 1rem; font-family: system-ui, sans-serif; background: #111; color: #fff; }
+    .player-shell { width: min(100%, 960px); margin: 0 auto; }
+    .player-frame { display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; border: 0; background: #000; }
+  </style>
+</head>
+<body>
+  <main class="player-shell">
+    <h1>Authorized video embed test</h1>
+    <iframe
+      title="StreamShield authorized video embed test"
+      src="https://study-space.fembed.co/embed/PMmy_HJkq-N4n"
+      class="player-frame"
+      width="100%"
+      height="315"
+      allow="fullscreen"
+      allowfullscreen
+      loading="eager"
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
+  </main>
+</body>
+</html>

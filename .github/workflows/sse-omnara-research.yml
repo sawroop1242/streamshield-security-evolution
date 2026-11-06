@@ -1,0 +1,64 @@
+name: SSE Omnara Research Agent
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "Research focus (treated as untrusted context; max 500 characters)"
+        required: false
+        type: string
+        default: "Review current public security guidance and emerging risks relevant to StreamShield."
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sse-omnara-research-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  launch-research:
+    name: Launch isolated read-only research agent
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout trusted default-branch workflow code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Check Omnara configuration
+        id: config
+        env:
+          OMNARA_API_TOKEN: ${{ secrets.OMNARA_API_TOKEN }}
+          OMNARA_ORG_ID: ${{ vars.OMNARA_ORG_ID }}
+          OMNARA_PROJECT_ID: ${{ vars.OMNARA_PROJECT_ID }}
+          OMNARA_MODEL_PROVIDER_CONFIG: ${{ vars.OMNARA_MODEL_PROVIDER_CONFIG }}
+          OMNARA_MODEL_NAME: ${{ vars.OMNARA_MODEL_NAME }}
+        shell: bash
+        run: |
+          if [[ -z "$OMNARA_API_TOKEN" || -z "$OMNARA_ORG_ID" || -z "$OMNARA_PROJECT_ID" || -z "$OMNARA_MODEL_PROVIDER_CONFIG" || -z "$OMNARA_MODEL_NAME" ]]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Omnara is not configured. Add the documented repository secret and variables to enable agent launches."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Launch research agent
+        if: steps.config.outputs.configured == 'true'
+        env:
+          OMNARA_API_TOKEN: ${{ secrets.OMNARA_API_TOKEN }}
+          OMNARA_ORG_ID: ${{ vars.OMNARA_ORG_ID }}
+          OMNARA_PROJECT_ID: ${{ vars.OMNARA_PROJECT_ID }}
+          OMNARA_MODEL_PROVIDER_CONFIG: ${{ vars.OMNARA_MODEL_PROVIDER_CONFIG }}
+          OMNARA_MODEL_NAME: ${{ vars.OMNARA_MODEL_NAME }}
+          OMNARA_API_URL: ${{ vars.OMNARA_API_URL }}
+          SSE_RESEARCH_SCOPE: ${{ inputs.scope || 'Review current public security guidance and emerging risks relevant to StreamShield.' }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: python3 scripts/launch_omnara_research.py
+
+      - name: Report disabled integration
+        if: steps.config.outputs.configured != 'true'
+        run: echo "Research agent was not launched because Omnara configuration is incomplete."
